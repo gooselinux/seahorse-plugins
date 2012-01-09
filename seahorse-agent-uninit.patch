@@ -1,0 +1,36 @@
+diff -up seahorse-plugins-2.28.1/agent/seahorse-agent.c.uninit seahorse-plugins-2.28.1/agent/seahorse-agent.c
+--- seahorse-plugins-2.28.1/agent/seahorse-agent.c.uninit	2009-11-09 19:48:13.260584104 -0500
++++ seahorse-plugins-2.28.1/agent/seahorse-agent.c	2009-11-09 19:48:26.065839414 -0500
+@@ -160,9 +160,3 @@ seahorse_agent_uninit (gpointer *data)
+     
+     return FALSE;
+ }
+-
+-void
+-seahorse_agent_exit ()
+-{
+-    seahorse_agent_uninit (NULL);
+-}
+diff -up seahorse-plugins-2.28.1/agent/seahorse-agent.h.uninit seahorse-plugins-2.28.1/agent/seahorse-agent.h
+--- seahorse-plugins-2.28.1/agent/seahorse-agent.h.uninit	2009-11-09 19:48:35.567605890 -0500
++++ seahorse-plugins-2.28.1/agent/seahorse-agent.h	2009-11-09 19:48:41.356583595 -0500
+@@ -55,7 +55,6 @@ void seahorse_agent_childsetup ();
+ /* Called in the new child process */
+ gboolean seahorse_agent_init ();
+ gboolean seahorse_agent_uninit (gpointer *data);
+-void     seahorse_agent_exit ();
+ 
+ /* Global options to set from the command line */
+ extern gboolean seahorse_agent_cshell;
+diff -up seahorse-plugins-2.28.1/agent/seahorse-agent-main.c.uninit seahorse-plugins-2.28.1/agent/seahorse-agent-main.c
+--- seahorse-plugins-2.28.1/agent/seahorse-agent-main.c.uninit	2009-11-09 19:48:55.069584989 -0500
++++ seahorse-plugins-2.28.1/agent/seahorse-agent-main.c	2009-11-09 19:49:23.294833587 -0500
+@@ -253,7 +253,7 @@ int main(int argc, char* argv[])
+      */
+     daemonize (seahorse_agent_execvars ? agent_exec_args : NULL);
+ 
+-    atexit (seahorse_agent_exit);
++    atexit (seahorse_agent_io_uninit);
+ 
+     g_strfreev (agent_exec_args);
+     agent_exec_args = NULL;
